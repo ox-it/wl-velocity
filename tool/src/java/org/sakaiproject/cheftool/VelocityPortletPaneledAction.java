@@ -29,6 +29,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -1073,6 +1075,30 @@ public abstract class VelocityPortletPaneledAction extends ToolServlet
 		// save it for the next display
 		session.setAttribute(ATTR_FRAME_FOCUS, jsArray);
 	}
+   
+   /**
+    ** Return a String array containing the "m", "d", "y" characters (corresponding to month, day, year) 
+    ** in the locale specific order
+    **/
+	private static String[] DEFAULT_FORMAT_ARRAY = new String[] {"m","d","y"};
+   public String[] getDateFormatString()
+   {
+      SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateInstance(DateFormat.SHORT, rb.getLocale());
+      String[] formatArray = sdf.toPattern().split("[/\\-\\.]");
+      for (int i=0; i<formatArray.length; i++)
+         formatArray[i] = formatArray[i].trim().substring(0,1).toLowerCase();
+			
+      if ( formatArray.length != DEFAULT_FORMAT_ARRAY.length )
+      {
+         M_log.warn("Unknown date format string (using default): " 
+                    + sdf.toPattern() );
+         return DEFAULT_FORMAT_ARRAY;
+      }
+      else
+      {
+         return formatArray;
+      } 
+   }
 
 } // class VelocityPortletPaneledAction
 
