@@ -53,13 +53,17 @@ public class MenuEntry implements MenuItem
 
 	/** The checked status (@see MenuItem for values). */
 	protected int m_checked = CHECKED_NA;
-	
+
+	/** The acessibility label for the entry. */
+	protected String m_accessibilitylabel = null;
+
 	/**
 	 * Construct a menu.
 	 */
-	public MenuEntry(String title, String icon, boolean enabled, int checked, String action, String form)
+	public MenuEntry(String title,String accessibilityLabel, String icon, boolean enabled, int checked, String action, String form)
 	{
 		m_title = title;
+		m_accessibilitylabel = accessibilityLabel;
 		m_icon = icon;
 		m_enabled = enabled;
 		m_checked = checked;
@@ -73,12 +77,7 @@ public class MenuEntry implements MenuItem
 	 */
 	public MenuEntry(String title, String icon, boolean enabled, int checked, String action)
 	{
-		m_title = title;
-		m_icon = icon;
-		m_enabled = enabled;
-		m_checked = checked;
-		m_action = action;
-
+		this(title,null,icon,enabled,checked,action,null);
 	} // MenuEntry
 
 	/**
@@ -86,9 +85,7 @@ public class MenuEntry implements MenuItem
 	 */
 	public MenuEntry(String title, boolean enabled, String action)
 	{
-		m_title = title;
-		m_enabled = enabled;
-		m_action = action;
+		this(title, null, null, enabled, CHECKED_NA, action, null);
 
 	} // MenuEntry
 
@@ -97,23 +94,49 @@ public class MenuEntry implements MenuItem
 	 */
 	public MenuEntry(String title, String action)
 	{
-		m_title = title;
-		m_action = action;
+		this(title, null, null, true, CHECKED_NA, action, null);
 
 	} // MenuEntry
+/**
+ 	 * Construct a menu.
+ 	 */
+		public MenuEntry(String title, String accessibilityLabel, String icon, boolean enabled, int checked, String action)
+		{
+			this(title, accessibilityLabel, icon, enabled, checked, action, null);
+		} // MenuEntry
 
-	/**
-	 * Set the full URL of the entry. To create an entry with a URL, create one first with a "" action, then call this.
-	 * 
-	 * @param url
-	 *        The full URL for the entry.
-	 * @return This, for convenience.
-	 */
+		/**
+	 	 * Construct a menu.
+	 	 */
+		public MenuEntry(String title, String accessibilityLabel, String action)
+		{
+			this(title, accessibilityLabel, null, true, CHECKED_NA, action, null);
+		} // MenuEntry
+
+		public MenuEntry(String title, String accessibilityLabel, boolean enabled, String action)
+		{
+			this(title, accessibilityLabel, null, enabled, CHECKED_NA, action, null);
+		} // MenuEntry
+
+		/**
+	 	 * Construct a menu.
+	 	 */
+		public MenuEntry(String title, String icon, boolean enabled, int checked, String action, String form)
+		{
+			this(title, null, icon, enabled, checked, action, form);
+		} // MenuEntry
+
+		/**
+		* Set the full URL of the entry. To create an entry with a URL, create one first with a "" action, then call this.
+		*
+		* @param url
+		* The full URL for the entry.
+		* @return This, for convenience.
+		*/
 	public MenuEntry setUrl(String url)
 	{
 		m_url = url;
 		return this;
-
 	} // setUrl
 
 	/**
@@ -287,7 +310,7 @@ public class MenuEntry implements MenuItem
 	@Override
 	public String getAccessibilityLabel() {
 		//not currently used in this class
-		return null;
+		return ((m_accessibilitylabel == null) ? m_title : m_accessibilitylabel);
 	}
 
 } // MenuEntry
